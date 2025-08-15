@@ -59,17 +59,23 @@ http://localhost:16686
 ---
 ## Trace Structure Example
 Each HTTP request (GET or POST) to /order generates a trace that looks like this in Jaeger UI:
+```plaintext
+Trace: HTTP Request (GET /order or POST /order)
+│
+└───▶ Span: order_process
+       │    • Attributes (Tags):
+       │     - order.id       → Unique identifier for the order (e.g., "ord-1234")
+       │     - user.id        → Identifies which user placed the order (e.g., "user-3")
+       │     - order.amount   → Total amount for the order (e.g., 276.45)
+       │
+       ├──▶ Span: check_inventory
+       │        • Represents time spent checking if the item is in stock
+       │
+       └──▶ Span: payment_processing
+                • Represents time spent handling payment logic
 
-```mermaid
-graph TD
-    A[HTTP Request: GET/POST /order]
-    A --> B[Span: order_process]
-    B --> B1[order.id: "ord-1234"]
-    B --> B2[user.id: "user-3"]
-    B --> B3[order.amount: 276.45]
-    B --> C[Span: check_inventory<br/>Time spent checking stock]
-    B --> D[Span: payment_processing<br/>Time spent handling payment]
 
+``` 
 This hierarchical view helps visualize the workflow and performance timing of each step in order processing.
 
 ---
